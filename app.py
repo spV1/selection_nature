@@ -1,8 +1,7 @@
 import spacy
 
-async def process_text(data):
-    nlp = spacy.load('en_core_web_sm')
-    doc = nlp(data)
+async def process_text(data, models):
+    doc = models(data)
 
     list_ent = []
     for ent in doc.ents:

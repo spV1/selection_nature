@@ -3,13 +3,13 @@ from app import process_text
 import json
 import spacy
 
-models_ = []
+app_model = web.Application()
 
 
 async def load_models(request):
     try:
         data = await request.json()
-        models_.append(spacy.load(data['model']))
+        app_model['model'] = spacy.load(data['model'])
 
         response_obj = {'status': 'loaded'}
         return web.json_response(text=json.dumps(response_obj), status=200)
@@ -22,8 +22,7 @@ async def load_models(request):
 async def text(request):
     try:
         data = await request.json()
-        # print(models_[0])
-        text_process = await process_text(data['text'], models_[0])
+        text_process = await process_text(data['text'], app_model['model'])
 
         return web.json_response(text=json.dumps(text_process), status=200)
 
